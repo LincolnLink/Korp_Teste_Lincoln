@@ -10,16 +10,21 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
+
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=KorpEstoqueDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+
       RabbitMq__HostName: rabbitmq
       RabbitMq__Port: 5672
+
     depends_on:
       sqlserver:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+
     networks:
       - korp-network
+
 
   faturamento-api:
     container_name: korp-faturamento-api
@@ -31,44 +36,58 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
+
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=KorpFaturamentoDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+
       RabbitMq__HostName: rabbitmq
       RabbitMq__Port: 5672
+
     depends_on:
       sqlserver:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+
     networks:
       - korp-network
+
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: korp-rabbitmq
+
     ports:
       - "5672:5672"
       - "15672:15672"
+
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+
     volumes:
       - korp-rabbitmq-data:/var/lib/rabbitmq
+
     networks:
       - korp-network
+
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: korp-sqlserver
+
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${SQL_PASSWORD}"
+
     ports:
       - "1433:1433"
+
     volumes:
       - korp-sqlserver-data:/var/opt/mssql
+
     healthcheck:
       test:
         [
@@ -79,12 +98,15 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+
     networks:
       - korp-network
+
 
 networks:
   korp-network:
     driver: bridge
+
 
 volumes:
   korp-sqlserver-data:
