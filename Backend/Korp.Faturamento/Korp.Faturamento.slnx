@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Korp.Faturamento.Api/Korp.Faturamento.Api.csproj" />
+  <Project Path="Korp.Faturamento.Application/Korp.Faturamento.Application.csproj" />
+  <Project Path="Korp.Faturamento.Domain/Korp.Faturamento.Domain.csproj" />
+  <Project Path="Korp.Faturamento.Infrastructure/Korp.Faturamento.Infrastructure.csproj" />
+</Solution>
