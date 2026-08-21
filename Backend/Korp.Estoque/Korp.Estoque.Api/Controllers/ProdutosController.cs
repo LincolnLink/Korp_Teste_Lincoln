@@ -55,13 +55,10 @@ public class ProdutosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Atualizar(
-        Guid id,
-        ProdutoRequestDto request)
+    Guid id,
+    ProdutoRequestDto request)
     {
-        var atualizado = await _produtoService.AtualizarAsync(id, request);
-
-        if (!atualizado)
-            return NotFound();
+        await _produtoService.AtualizarAsync(id, request);
 
         return NoContent();
     }
@@ -71,10 +68,7 @@ public class ProdutosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Excluir(Guid id)
     {
-        var excluido = await _produtoService.ExcluirAsync(id);
-
-        if (!excluido)
-            return NotFound();
+        await _produtoService.ExcluirAsync(id);
 
         return NoContent();
     }

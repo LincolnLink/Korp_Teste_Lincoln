@@ -10,6 +10,8 @@ namespace Korp.Estoque.Domain.Interfaces
 
         Task<Produto?> ObterPorIdAsync(Guid id);
 
+        Task<Produto?> ObterPorCodigoAsync(string codigo);
+
         Task AtualizarAsync(Produto produto);
 
         Task ExcluirAsync(Produto produto);

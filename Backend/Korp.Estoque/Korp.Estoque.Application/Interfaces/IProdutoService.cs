@@ -6,10 +6,10 @@
 
         Task<IEnumerable<ProdutoResponseDto>> ObterTodosAsync();
 
-        Task<ProdutoResponseDto?> ObterPorIdAsync(Guid id);
+        Task<ProdutoResponseDto> ObterPorIdAsync(Guid id);
 
-        Task<bool> AtualizarAsync(Guid id, ProdutoRequestDto request);
+        Task AtualizarAsync(Guid id, ProdutoRequestDto request);
 
-        Task<bool> ExcluirAsync(Guid id);
+        Task ExcluirAsync(Guid id);
     }
 }

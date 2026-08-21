@@ -33,6 +33,13 @@ namespace Korp.Estoque.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Produto?> ObterPorCodigoAsync(string codigo)
+        {
+            return await _context.Produtos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Codigo == codigo);
+        }
+
         public async Task AtualizarAsync(Produto produto)
         {
             _context.Produtos.Update(produto);

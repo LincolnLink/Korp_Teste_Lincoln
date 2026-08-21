@@ -1,8 +1,5 @@
 ﻿using Korp.Estoque.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Korp.Estoque.Infrastructure.Context
 {
