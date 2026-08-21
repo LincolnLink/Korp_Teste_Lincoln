@@ -1,5 +1,4 @@
-using Korp.Estoque.Application.DTOs;
-using Korp.Estoque.Application.Interfaces;
+﻿using Korp.Estoque.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Korp.Estoque.Api.Controllers;

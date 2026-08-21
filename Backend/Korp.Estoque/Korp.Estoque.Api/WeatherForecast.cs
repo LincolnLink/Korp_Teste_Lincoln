@@ -1,4 +1,4 @@
-namespace Korp.Estoque
+namespace Korp.Estoque.Api
 {
     public class WeatherForecast
     {

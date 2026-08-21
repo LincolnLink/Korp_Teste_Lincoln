@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Korp.Estoque.Controllers
+namespace Korp.Estoque.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
