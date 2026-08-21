@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Korp.Estoque.Application.Interfaces
+﻿namespace Korp.Estoque.Application.Interfaces
 {
     public interface IProdutoService
     {
