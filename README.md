@@ -3,3 +3,12 @@ Esse repositório tem o proposito de criar um projeto teste para a Korp, é um S
 
 - .NET/c#
 - Angular
+
+
+
+-migration na pasta da solução.
+
+dotnet ef migrations add InitialCreate --project Korp.Estoque.Infrastructure --startup-project Korp.Estoque.Api
+
+dotnet ef database update --project Korp.Estoque.Infrastructure --startup-project Korp.Estoque.Api
+
