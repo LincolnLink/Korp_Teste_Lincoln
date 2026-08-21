@@ -24,20 +24,21 @@ namespace Korp.Estoque.Infrastructure.Repositories
         {
             return await _context.Produtos
                 .AsNoTracking()
+                .Where(x => x.Ativo)
                 .ToListAsync();
         }
 
         public async Task<Produto?> ObterPorIdAsync(Guid id)
         {
             return await _context.Produtos
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id && x.Ativo);
         }
 
         public async Task<Produto?> ObterPorCodigoAsync(string codigo)
         {
             return await _context.Produtos
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Codigo == codigo);
+                .FirstOrDefaultAsync(x => x.Codigo == codigo && x.Ativo);
         }
 
         public async Task AtualizarAsync(Produto produto)
@@ -48,7 +49,9 @@ namespace Korp.Estoque.Infrastructure.Repositories
 
         public async Task ExcluirAsync(Produto produto)
         {
-            _context.Produtos.Remove(produto);
+            produto.Ativo = false;
+
+            _context.Produtos.Update(produto);
             await _context.SaveChangesAsync();
         }
     }
