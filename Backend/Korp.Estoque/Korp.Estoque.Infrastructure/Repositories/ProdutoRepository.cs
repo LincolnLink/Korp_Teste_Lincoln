@@ -54,5 +54,17 @@ namespace Korp.Estoque.Infrastructure.Repositories
             _context.Produtos.Update(produto);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Produto>> ObterPorIdsAsync(IEnumerable<Guid> ids)
+        {
+            return await _context.Produtos
+                .Where(x => ids.Contains(x.Id) && x.Ativo)
+                .ToListAsync();
+        }
+
+        public async Task SalvarAlteracoesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

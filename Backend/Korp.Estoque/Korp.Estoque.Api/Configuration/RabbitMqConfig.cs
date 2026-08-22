@@ -1,4 +1,5 @@
 ﻿using Korp.Estoque.Infrastructure.Messaging;
+using Korp.Estoque.Infrastructure.Messaging.Consumers;
 
 namespace Korp.Estoque.Api.Configuration
 {
@@ -14,6 +15,8 @@ namespace Korp.Estoque.Api.Configuration
             services.AddSingleton<RabbitMqConnection>();
 
             services.AddSingleton<RabbitMqTopology>();
+
+            services.AddHostedService<ProcessarNotaConsumer>();
 
             return services;
         }

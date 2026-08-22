@@ -15,5 +15,9 @@ namespace Korp.Estoque.Domain.Interfaces
         Task AtualizarAsync(Produto produto);
 
         Task ExcluirAsync(Produto produto);
+
+        Task<List<Produto>> ObterPorIdsAsync(IEnumerable<Guid> ids);
+
+        Task SalvarAlteracoesAsync();
     }
 }

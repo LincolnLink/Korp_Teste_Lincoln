@@ -24,6 +24,8 @@ namespace Korp.Estoque.Api.Configuration
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
 
+            services.AddScoped<IProcessamentoEstoqueService, ProcessamentoEstoqueService>();
+
             return services;
         }
     }

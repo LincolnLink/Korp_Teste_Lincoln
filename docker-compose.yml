@@ -17,6 +17,9 @@ services:
       RabbitMq__Port: 5672
       RabbitMq__UserName: guest
       RabbitMq__Password: guest
+      RabbitMq__ProcessarNotaExchange: nota.processamento.exchange
+      RabbitMq__ProcessarNotaQueue: nota.processamento.queue
+      RabbitMq__ProcessarNotaRoutingKey: nota.processamento
 
     depends_on:
       sqlserver:
@@ -45,6 +48,9 @@ services:
       RabbitMq__Port: 5672
       RabbitMq__UserName: guest
       RabbitMq__Password: guest
+      RabbitMq__ProcessarNotaExchange: nota.processamento.exchange
+      RabbitMq__ProcessarNotaQueue: nota.processamento.queue
+      RabbitMq__ProcessarNotaRoutingKey: nota.processamento
 
     depends_on:
       sqlserver:
