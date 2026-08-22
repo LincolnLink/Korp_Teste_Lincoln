@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Korp.Faturamento.Application.Messages
+﻿namespace Korp.Estoque.Domain.Messages
 {
     public class ProcessarNotaFiscalMessage
     {

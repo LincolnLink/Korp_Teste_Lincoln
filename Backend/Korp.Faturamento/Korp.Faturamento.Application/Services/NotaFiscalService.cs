@@ -2,7 +2,7 @@
 using Korp.Faturamento.Application.DTOs;
 using Korp.Faturamento.Application.Exceptions;
 using Korp.Faturamento.Application.Interfaces;
-using Korp.Faturamento.Application.Messages;
+using Korp.Faturamento.Domain.Messages;
 using Korp.Faturamento.Domain.Entities;
 using Korp.Faturamento.Domain.Enums;
 using Korp.Faturamento.Domain.Interfaces;
@@ -14,15 +14,16 @@ namespace Korp.Faturamento.Application.Services
     {
         private readonly INotaFiscalRepository _notaFiscalRepository;        
         private readonly IValidator<CriarNotaFiscalDto> _validator;
-        private readonly IRabbitMqPublisher _rabbitMqPublisher;
+        private readonly IProcessamentoNotaPublisher _publisher;
 
         public NotaFiscalService(
             INotaFiscalRepository notaFiscalRepository,
             IValidator<CriarNotaFiscalDto> validator,
-            IRabbitMqPublisher rabbitMqPublisher)
+            IProcessamentoNotaPublisher publisher)
         {
             _notaFiscalRepository = notaFiscalRepository;
             _validator = validator;
+            _publisher = publisher;
         }
 
         public async Task<NotaFiscalResponseDto> CadastrarAsync(CriarNotaFiscalDto request)
@@ -108,8 +109,7 @@ namespace Korp.Faturamento.Application.Services
                     .ToList()
             };
 
-            await _rabbitMqPublisher
-                .PublicarProcessamentoNotaAsync(message);
+            await _publisher.PublicarProcessamentoNotaAsync(message);
         }
 
         private static NotaFiscalResponseDto MapearNotaFiscal(NotaFiscal nota)

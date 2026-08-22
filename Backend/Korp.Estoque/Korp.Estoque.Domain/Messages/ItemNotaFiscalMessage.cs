@@ -1,4 +1,4 @@
-﻿namespace Korp.Faturamento.Application.Messages
+﻿namespace Korp.Estoque.Domain.Messages
 {
     public class ItemNotaFiscalMessage
     {

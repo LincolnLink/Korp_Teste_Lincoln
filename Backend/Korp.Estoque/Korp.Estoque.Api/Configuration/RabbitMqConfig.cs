@@ -11,6 +11,10 @@ namespace Korp.Estoque.Api.Configuration
             services.Configure<RabbitMqSettings>(
                 configuration.GetSection("RabbitMq"));
 
+            services.AddSingleton<RabbitMqConnection>();
+
+            services.AddSingleton<RabbitMqTopology>();
+
             return services;
         }
     }

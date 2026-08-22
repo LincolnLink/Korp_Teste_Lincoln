@@ -4,6 +4,7 @@ using Korp.Faturamento.Application.Interfaces;
 using Korp.Faturamento.Application.Services;
 using Korp.Faturamento.Application.Validators;
 using Korp.Faturamento.Domain.Interfaces;
+using Korp.Faturamento.Infrastructure.Messaging.Publishers;
 using Korp.Faturamento.Infrastructure.Repositories;
 
 namespace Korp.Faturamento.Api.Configuration
@@ -22,6 +23,8 @@ namespace Korp.Faturamento.Api.Configuration
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
+
+            services.AddScoped<IProcessamentoNotaPublisher, RabbitMqPublisher>();
 
             return services;
         }

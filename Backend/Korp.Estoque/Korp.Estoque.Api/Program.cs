@@ -1,4 +1,5 @@
 using Korp.Estoque.Api.Configuration;
+using Korp.Estoque.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.UseExceptionHandler();
+
+var rabbitMqTopology =
+    app.Services.GetRequiredService<RabbitMqTopology>();
+
+await rabbitMqTopology.ConfigureAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

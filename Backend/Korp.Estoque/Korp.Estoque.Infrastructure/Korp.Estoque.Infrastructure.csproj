@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Korp.Estoque.Domain\Korp.Estoque.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Messaging\Publishers\" />
+  </ItemGroup>
+
 </Project>
