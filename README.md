@@ -19,10 +19,19 @@ dotnet ef database update --project Korp.Estoque.Infrastructure --startup-projec
 database update
 
 
-### criando outra migração: 
+### criando outra migração Estoque: 
 
 dotnet ef migrations add AdicionarAtivoProduto --project Korp.Estoque.Infrastructure --startup-project Korp.Estoque.Api
 
 ### depois 
 
 dotnet ef database update --project Korp.Estoque.Infrastructure --startup-project Korp.Estoque.Api
+
+### Cria migration Faturamento:
+
+dotnet ef migrations add InitialCreate --project Korp.Faturamento.Infrastructure --startup-project Korp.Faturamento.Api
+
+### cria a tabela e banco
+
+dotnet ef database update --project Korp.Faturamento.Infrastructure --startup-project Korp.Faturamento.Api
+
