@@ -4,6 +4,7 @@ using Korp.Estoque.Application.Interfaces;
 using Korp.Estoque.Application.Services;
 using Korp.Estoque.Application.Validators;
 using Korp.Estoque.Domain.Interfaces;
+using Korp.Estoque.Infrastructure.Messaging.Publishers;
 using Korp.Estoque.Infrastructure.Repositories;
 
 namespace Korp.Estoque.Api.Configuration
@@ -25,6 +26,8 @@ namespace Korp.Estoque.Api.Configuration
             services.AddProblemDetails();
 
             services.AddScoped<IProcessamentoEstoqueService, ProcessamentoEstoqueService>();
+
+            services.AddScoped<IResultadoNotaPublisher, ResultadoNotaPublisher>();
 
             return services;
         }

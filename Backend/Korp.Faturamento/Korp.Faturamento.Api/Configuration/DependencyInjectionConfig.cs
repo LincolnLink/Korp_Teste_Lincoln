@@ -4,6 +4,7 @@ using Korp.Faturamento.Application.Interfaces;
 using Korp.Faturamento.Application.Services;
 using Korp.Faturamento.Application.Validators;
 using Korp.Faturamento.Domain.Interfaces;
+using Korp.Faturamento.Infrastructure.Messaging.Consumers;
 using Korp.Faturamento.Infrastructure.Messaging.Publishers;
 using Korp.Faturamento.Infrastructure.Repositories;
 

@@ -37,6 +37,23 @@ namespace Korp.Faturamento.Infrastructure.Messaging
                 queue: _settings.ProcessarNotaQueue,
                 exchange: _settings.ProcessarNotaExchange,
                 routingKey: _settings.ProcessarNotaRoutingKey);
+
+            await channel.ExchangeDeclareAsync(
+                exchange: _settings.ResultadoNotaExchange,
+                type: ExchangeType.Direct,
+                durable: true,
+                autoDelete: false);
+
+            await channel.QueueDeclareAsync(
+                queue: _settings.ResultadoNotaQueue,
+                durable: true,
+                exclusive: false,
+                autoDelete: false);
+
+            await channel.QueueBindAsync(
+                queue: _settings.ResultadoNotaQueue,
+                exchange: _settings.ResultadoNotaExchange,
+                routingKey: _settings.ResultadoNotaRoutingKey);
         }
     }
 }

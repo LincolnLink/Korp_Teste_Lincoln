@@ -1,4 +1,5 @@
 ﻿using Korp.Faturamento.Infrastructure.Messaging;
+using Korp.Faturamento.Infrastructure.Messaging.Consumers;
 
 namespace Korp.Faturamento.Api.Configuration
 {
@@ -14,6 +15,8 @@ namespace Korp.Faturamento.Api.Configuration
             services.AddSingleton<RabbitMqConnection>();
 
             services.AddSingleton<RabbitMqTopology>();
+
+            services.AddHostedService<ResultadoNotaConsumer>();
 
             return services;
         }

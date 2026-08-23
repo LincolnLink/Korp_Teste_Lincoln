@@ -35,3 +35,6 @@ dotnet ef migrations add InitialCreate --project Korp.Faturamento.Infrastructure
 
 dotnet ef database update --project Korp.Faturamento.Infrastructure --startup-project Korp.Faturamento.Api
 
+### roda todo docker-compose
+
+docker compose up --build

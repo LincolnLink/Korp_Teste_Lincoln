@@ -14,5 +14,8 @@ namespace Korp.Estoque.Infrastructure.Messaging
         public string ProcessarNotaExchange { get; set; } = string.Empty;
         public string ProcessarNotaQueue { get; set; } = string.Empty;
         public string ProcessarNotaRoutingKey { get; set; } = string.Empty;
+        public string ResultadoNotaExchange { get; set; } = string.Empty;
+        public string ResultadoNotaQueue { get; set; } = string.Empty;
+        public string ResultadoNotaRoutingKey { get; set; } = string.Empty;
     }
 }

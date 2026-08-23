@@ -47,17 +47,20 @@ namespace Korp.Estoque.Infrastructure.Messaging.Consumers
 
             consumer.ReceivedAsync += async (_, eventArgs) =>
             {
+                ProcessarNotaFiscalMessage? message = null;
+
                 try
                 {
                     var body = eventArgs.Body.ToArray();
 
                     var json = Encoding.UTF8.GetString(body);
 
-                    var message = JsonSerializer.Deserialize< ProcessarNotaFiscalMessage>(json);
+                    message = JsonSerializer.Deserialize<ProcessarNotaFiscalMessage>(json);
 
                     if (message is null)
                     {
-                        _logger.LogWarning("Mensagem inválida recebida do RabbitMQ.");
+                        _logger.LogWarning(
+                            "Mensagem inválida recebida do RabbitMQ.");
 
                         await _channel.BasicNackAsync(
                             deliveryTag: eventArgs.DeliveryTag,
@@ -71,19 +74,59 @@ namespace Korp.Estoque.Infrastructure.Messaging.Consumers
 
                     var processamentoService = scope.ServiceProvider.GetRequiredService<IProcessamentoEstoqueService>();
 
+                    var resultadoPublisher = scope.ServiceProvider.GetRequiredService<IResultadoNotaPublisher>();
+
                     await processamentoService.ProcessarNotaAsync(message);
+
+                    await resultadoPublisher.PublicarAsync(
+                        new ResultadoProcessamentoNotaMessage
+                        {
+                            NotaFiscalId = message.NotaFiscalId,
+                            Sucesso = true,
+                            Mensagem =
+                                "Estoque processado com sucesso."
+                        });
 
                     await _channel.BasicAckAsync(
                         deliveryTag: eventArgs.DeliveryTag,
                         multiple: false);
 
-                    _logger.LogInformation("Nota fiscal {NotaFiscalId} processada com sucesso.", message.NotaFiscalId);
+                    _logger.LogInformation(
+                        "Nota fiscal {NotaFiscalId} processada com sucesso.",
+                        message.NotaFiscalId);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(
                         ex,
                         "Erro ao processar mensagem de estoque.");
+
+                    if (message is not null)
+                    {
+                        try
+                        {
+                            using var scope = _scopeFactory.CreateScope();
+
+                            var resultadoPublisher = scope.ServiceProvider.GetRequiredService<IResultadoNotaPublisher>();
+
+                            await resultadoPublisher.PublicarAsync(
+                                new ResultadoProcessamentoNotaMessage
+                                {
+                                    NotaFiscalId = message.NotaFiscalId,
+
+                                    Sucesso = false,
+
+                                    Mensagem = ex.Message
+                                });
+                        }
+                        catch (Exception publisherException)
+                        {
+                            _logger.LogError(
+                                publisherException,
+                                "Erro ao publicar resultado de falha da nota {NotaFiscalId}.",
+                                message.NotaFiscalId);
+                        }
+                    }
 
                     await _channel.BasicNackAsync(
                         deliveryTag: eventArgs.DeliveryTag,
@@ -97,9 +140,14 @@ namespace Korp.Estoque.Infrastructure.Messaging.Consumers
                 autoAck: false,
                 consumer: consumer,
                 cancellationToken: stoppingToken);
+
+            await Task.Delay(
+                Timeout.Infinite,
+                stoppingToken);
         }
 
-        public override async Task StopAsync( CancellationToken cancellationToken)
+        public override async Task StopAsync(
+            CancellationToken cancellationToken)
         {
             if (_channel is not null)
             {

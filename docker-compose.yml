@@ -20,6 +20,9 @@ services:
       RabbitMq__ProcessarNotaExchange: nota.processamento.exchange
       RabbitMq__ProcessarNotaQueue: nota.processamento.queue
       RabbitMq__ProcessarNotaRoutingKey: nota.processamento
+      RabbitMq__ResultadoNotaExchange: nota.resultado.exchange
+      RabbitMq__ResultadoNotaQueue: nota.resultado.queue
+      RabbitMq__ResultadoNotaRoutingKey: nota.resultado
 
     depends_on:
       sqlserver:
@@ -51,6 +54,9 @@ services:
       RabbitMq__ProcessarNotaExchange: nota.processamento.exchange
       RabbitMq__ProcessarNotaQueue: nota.processamento.queue
       RabbitMq__ProcessarNotaRoutingKey: nota.processamento
+      RabbitMq__ResultadoNotaExchange: nota.resultado.exchange
+      RabbitMq__ResultadoNotaQueue: nota.resultado.queue
+      RabbitMq__ResultadoNotaRoutingKey: nota.resultado
 
     depends_on:
       sqlserver:
