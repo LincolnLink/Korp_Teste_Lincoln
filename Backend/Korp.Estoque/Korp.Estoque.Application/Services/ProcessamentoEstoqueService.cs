@@ -16,6 +16,9 @@ namespace Korp.Estoque.Application.Services
 
         public async Task ProcessarNotaAsync(ProcessarNotaFiscalMessage message)
         {
+            // SOMENTE PARA TESTAR RETRY/DLQ
+            // throw new Exception("Erro proposital para testar Retry.");
+
             if (message.Itens is null || message.Itens.Count == 0)
             {
                 throw new BusinessException("A nota fiscal não possui itens.");

@@ -38,3 +38,8 @@ dotnet ef database update --project Korp.Faturamento.Infrastructure --startup-pr
 ### roda todo docker-compose
 
 docker compose up --build
+
+### verificar o log pelo docker 
+
+docker logs korp-estoque-api
+
