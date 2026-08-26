@@ -23,6 +23,13 @@ services:
       RabbitMq__ResultadoNotaExchange: nota.resultado.exchange
       RabbitMq__ResultadoNotaQueue: nota.resultado.queue
       RabbitMq__ResultadoNotaRoutingKey: nota.resultado
+      RabbitMq__RetryExchange: nota.retry.exchange
+      RabbitMq__RetryQueue: nota.retry.queue
+      RabbitMq__RetryRoutingKey: nota.retry
+      RabbitMq__DeadLetterExchange: nota.deadletter.exchange
+      RabbitMq__DeadLetterQueue: nota.deadletter.queue
+      RabbitMq__DeadLetterRoutingKey: nota.deadletter
+
 
     depends_on:
       sqlserver:

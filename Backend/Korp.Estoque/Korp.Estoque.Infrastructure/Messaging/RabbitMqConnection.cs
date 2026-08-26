@@ -9,16 +9,14 @@ namespace Korp.Estoque.Infrastructure.Messaging
 
         private IConnection? _connection;
 
-        public RabbitMqConnection(
-            IOptions<RabbitMqSettings> options)
+        public RabbitMqConnection(IOptions<RabbitMqSettings> options)
         {
             _settings = options.Value;
         }
 
         public async Task<IConnection> GetConnectionAsync()
         {
-            if (_connection is not null &&
-                _connection.IsOpen)
+            if (_connection is not null && _connection.IsOpen)
             {
                 return _connection;
             }
@@ -32,20 +30,17 @@ namespace Korp.Estoque.Infrastructure.Messaging
 
                 AutomaticRecoveryEnabled = true,
 
-                ClientProvidedName =
-                    "Korp.Estoque"
+                ClientProvidedName = "Korp.Estoque"
             };
 
-            _connection =
-                await factory.CreateConnectionAsync();
+            _connection = await factory.CreateConnectionAsync();
 
             return _connection;
         }
 
         public async Task<IChannel> CreateChannelAsync()
         {
-            var connection =
-                await GetConnectionAsync();
+            var connection = await GetConnectionAsync();
 
             return await connection.CreateChannelAsync();
         }

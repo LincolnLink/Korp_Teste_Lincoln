@@ -15,12 +15,9 @@ namespace Korp.Faturamento.Application.Services
             _repository = repository;
         }
 
-        public async Task ProcessarResultadoAsync(
-            ResultadoProcessamentoNotaMessage message)
+        public async Task ProcessarResultadoAsync(ResultadoProcessamentoNotaMessage message)
         {
-            var nota =
-                await _repository.ObterPorIdAsync(
-                    message.NotaFiscalId);
+            var nota = await _repository.ObterPorIdAsync(message.NotaFiscalId);
 
             if (nota is null)
                 throw new NotFoundException(

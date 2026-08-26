@@ -35,54 +35,37 @@ namespace Korp.Faturamento.Infrastructure.Messaging.Consumers
         protected override async Task ExecuteAsync(
             CancellationToken stoppingToken)
         {
-            _channel =
-                await _connection.CreateChannelAsync();
+            _channel = await _connection.CreateChannelAsync();
 
-            var consumer =
-                new AsyncEventingBasicConsumer(_channel);
+            var consumer = new AsyncEventingBasicConsumer(_channel);
 
             consumer.ReceivedAsync += async (_, ea) =>
             {
                 try
                 {
-                    var json =
-                        Encoding.UTF8.GetString(
-                            ea.Body.ToArray());
+                    var json = Encoding.UTF8.GetString(ea.Body.ToArray());
 
                     var message = JsonSerializer.Deserialize<ResultadoProcessamentoNotaMessage>(json);
 
                     if (message is null)
                     {
-                        await _channel.BasicNackAsync(
-                            ea.DeliveryTag,
-                            false,
-                            false);
-
+                        await _channel.BasicNackAsync( ea.DeliveryTag, false, false);
                         return;
                     }
 
-                    using var scope =
-                        _scopeFactory.CreateScope();
+                    using var scope = _scopeFactory.CreateScope();
 
-                    var service =
-                        scope.ServiceProvider.GetRequiredService<IResultadoNotaService>();
+                    var service = scope.ServiceProvider.GetRequiredService<IResultadoNotaService>();
 
                     await service.ProcessarResultadoAsync(message);
 
-                    await _channel.BasicAckAsync(
-                        ea.DeliveryTag,
-                        false);
+                    await _channel.BasicAckAsync(ea.DeliveryTag, false);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(
-                        ex,
-                        "Erro ao processar resultado da nota.");
+                    _logger.LogError(ex,"Erro ao processar resultado da nota.");
 
-                    await _channel.BasicNackAsync(
-                        ea.DeliveryTag,
-                        false,
-                        false);
+                    await _channel.BasicNackAsync(ea.DeliveryTag, false, false);
                 }
             };
 
@@ -92,9 +75,7 @@ namespace Korp.Faturamento.Infrastructure.Messaging.Consumers
                 consumer: consumer,
                 cancellationToken: stoppingToken);
 
-            await Task.Delay(
-                Timeout.Infinite,
-                stoppingToken);
+            await Task.Delay( Timeout.Infinite, stoppingToken);
         }
     }
 }

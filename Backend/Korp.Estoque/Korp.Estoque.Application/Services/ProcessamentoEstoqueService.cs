@@ -18,8 +18,7 @@ namespace Korp.Estoque.Application.Services
         {
             if (message.Itens is null || message.Itens.Count == 0)
             {
-                throw new BusinessException(
-                    "A nota fiscal não possui itens.");
+                throw new BusinessException("A nota fiscal não possui itens.");
             }
 
             var ids = message.Itens
@@ -27,25 +26,20 @@ namespace Korp.Estoque.Application.Services
                 .Distinct()
                 .ToList();
 
-            var produtos =
-                await _produtoRepository.ObterPorIdsAsync(ids);
+            var produtos = await _produtoRepository.ObterPorIdsAsync(ids);
 
             foreach (var item in message.Itens)
             {
-                var produto =
-                    produtos.FirstOrDefault(
-                        x => x.Id == item.ProdutoId);
+                var produto = produtos.FirstOrDefault(x => x.Id == item.ProdutoId);
 
                 if (produto is null)
                 {
-                    throw new BusinessException(
-                        $"Produto {item.ProdutoId} não encontrado.");
+                    throw new BusinessException($"Produto {item.ProdutoId} não encontrado.");
                 }
 
                 if (item.Quantidade <= 0)
                 {
-                    throw new BusinessException(
-                        "A quantidade deve ser maior que zero.");
+                    throw new BusinessException("A quantidade deve ser maior que zero.");
                 }
 
                 if (produto.Saldo < item.Quantidade)
@@ -61,8 +55,7 @@ namespace Korp.Estoque.Application.Services
             // Só depois alteramos os saldos.
             foreach (var item in message.Itens)
             {
-                var produto =
-                    produtos.First(x => x.Id == item.ProdutoId);
+                var produto = produtos.First(x => x.Id == item.ProdutoId);
 
                 produto.Saldo -= item.Quantidade;
             }
