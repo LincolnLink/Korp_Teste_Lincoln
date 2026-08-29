@@ -43,3 +43,13 @@ docker compose up --build
 
 docker logs korp-estoque-api
 
+# FRONT END
+
+### Criando projeto Angular
+
+Angular 22
+
+ng new korp-frontend --routing --style=scss
+
+ng add ng-zorro-antd
+
