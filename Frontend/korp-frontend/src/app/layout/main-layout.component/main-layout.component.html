@@ -1,1 +1,85 @@
-<p>main-layout.component works!</p>
+<nz-layout class="app-layout">
+
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+    nzWidth="220px"
+    nzTheme="dark">
+
+    <div class="logo">
+      @if (!isCollapsed) {
+        <span>KORP</span>
+      } @else {
+        <span>K</span>
+      }
+    </div>
+
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed">
+
+      <li
+        nz-menu-item
+        routerLink="/produtos"
+        routerLinkActive="ant-menu-item-selected">
+
+        <nz-icon nzType="appstore" />
+
+        @if (!isCollapsed) {
+          <span>Produtos</span>
+        }
+
+      </li>
+
+      <li
+        nz-menu-item
+        routerLink="/notas"
+        routerLinkActive="ant-menu-item-selected">
+
+        <nz-icon nzType="file-text" />
+
+        @if (!isCollapsed) {
+          <span>Notas Fiscais</span>
+        }
+
+      </li>
+
+    </ul>
+
+  </nz-sider>
+
+
+  <nz-layout>
+
+    <nz-header class="header">
+
+      <button
+        class="collapse-button"
+        type="button"
+        (click)="isCollapsed = !isCollapsed">
+
+        <nz-icon
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
+
+      </button>
+
+      <div class="header-title">
+        Sistema de Faturamento
+      </div>
+
+    </nz-header>
+
+
+    <nz-content class="content">
+
+      <router-outlet />
+
+    </nz-content>
+
+  </nz-layout>
+
+</nz-layout>

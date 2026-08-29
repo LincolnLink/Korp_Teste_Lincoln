@@ -1,0 +1,29 @@
+.item-row {
+  display: grid;
+
+  grid-template-columns: 1fr 120px auto;
+
+  gap: 12px;
+
+  align-items: end;
+
+  margin-bottom: 16px;
+}
+
+.produto-field {
+  width: 100%;
+}
+
+.quantidade-field nz-input-number {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  margin-top: 24px;
+}

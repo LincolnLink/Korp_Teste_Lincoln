@@ -1,0 +1,19 @@
+.page-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: #777777;
+}

@@ -1,0 +1,89 @@
+<form
+  nz-form
+  nzLayout="vertical"
+  [formGroup]="form"
+  (ngSubmit)="salvar()">
+
+
+  <nz-form-item>
+
+    <nz-form-label nzRequired>
+      Código
+    </nz-form-label>
+
+    <nz-form-control
+      nzErrorTip="Informe o código do produto.">
+
+      <input
+        nz-input
+        formControlName="codigo"
+        placeholder="Ex: PROD001" />
+
+    </nz-form-control>
+
+  </nz-form-item>
+
+
+  <nz-form-item>
+
+    <nz-form-label nzRequired>
+      Descrição
+    </nz-form-label>
+
+    <nz-form-control
+      nzErrorTip="Informe a descrição do produto.">
+
+      <input
+        nz-input
+        formControlName="descricao"
+        placeholder="Descrição do produto" />
+
+    </nz-form-control>
+
+  </nz-form-item>
+
+
+  <nz-form-item>
+
+    <nz-form-label nzRequired>
+      Saldo
+    </nz-form-label>
+
+    <nz-form-control>
+
+      <nz-input-number
+        formControlName="saldo"
+        [nzMin]="0"
+        [nzStep]="1"
+        class="saldo-input" />
+
+    </nz-form-control>
+
+  </nz-form-item>
+
+
+  <div class="form-actions">
+
+    <button
+      nz-button
+      type="button"
+      (click)="cancelado.emit()">
+
+      Cancelar
+
+    </button>
+
+
+    <button
+      nz-button
+      nzType="primary"
+      type="submit"
+      [nzLoading]="salvando">
+
+      Salvar
+
+    </button>
+
+  </div>
+
+</form>

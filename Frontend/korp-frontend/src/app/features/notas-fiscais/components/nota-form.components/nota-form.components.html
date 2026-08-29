@@ -1,0 +1,123 @@
+<form
+  nz-form
+  nzLayout="vertical"
+  [formGroup]="form"
+  (ngSubmit)="salvar()">
+
+
+  <div
+    formArrayName="itens">
+
+
+    @for (
+      item of itens.controls;
+      track $index;
+      let i = $index
+    ) {
+
+      <div
+        class="item-row"
+        [formGroupName]="i">
+
+
+        <nz-form-item class="produto-field">
+
+          <nz-form-label nzRequired>
+            Produto
+          </nz-form-label>
+
+          <nz-form-control>
+
+            <nz-select
+              formControlName="produtoId"
+              nzPlaceHolder="Selecione o produto">
+
+              @for (
+                produto of produtos;
+                track produto.id
+              ) {
+
+                <nz-option
+                  [nzValue]="produto.id"
+                  [nzLabel]="produto.codigo + ' - ' + produto.descricao" />
+
+              }
+
+            </nz-select>
+
+          </nz-form-control>
+
+        </nz-form-item>
+
+
+        <nz-form-item class="quantidade-field">
+
+          <nz-form-label nzRequired>
+            Quantidade
+          </nz-form-label>
+
+          <nz-form-control>
+
+            <nz-input-number
+              formControlName="quantidade"
+              [nzMin]="1"
+              [nzStep]="1" />
+
+          </nz-form-control>
+
+        </nz-form-item>
+
+
+        <button
+          nz-button
+          nzDanger
+          type="button"
+          [disabled]="itens.length === 1"
+          (click)="removerItem(i)">
+
+          Remover
+
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <button
+    nz-button
+    type="button"
+    (click)="adicionarItem()">
+
+    + Adicionar Produto
+
+  </button>
+
+
+  <div class="form-actions">
+
+    <button
+      nz-button
+      type="button"
+      (click)="cancelado.emit()">
+
+      Cancelar
+
+    </button>
+
+
+    <button
+      nz-button
+      nzType="primary"
+      type="submit"
+      [nzLoading]="salvando">
+
+      Criar Nota
+
+    </button>
+
+  </div>
+
+</form>

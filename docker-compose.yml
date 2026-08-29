@@ -126,6 +126,19 @@ services:
       - korp-network
 
 
+  frontend:
+    build:
+      context: ./Frontend/korp-frontend
+      dockerfile: Dockerfile
+    container_name: korp-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - estoque-api
+      - faturamento-api
+    networks:
+      - korp-network
+
 networks:
   korp-network:
     driver: bridge

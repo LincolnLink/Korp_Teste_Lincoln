@@ -1,0 +1,62 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+.menu-sidebar {
+  min-height: 100vh;
+}
+
+.logo {
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  font-size: 22px;
+  font-weight: 600;
+
+  letter-spacing: 2px;
+}
+
+.header {
+  height: 64px;
+
+  padding: 0 24px;
+
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.collapse-button {
+  border: none;
+  background: transparent;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.content {
+  margin: 24px;
+  padding: 24px;
+
+  background: #ffffff;
+
+  min-height: calc(100vh - 112px);
+
+  border-radius: 8px;
+}

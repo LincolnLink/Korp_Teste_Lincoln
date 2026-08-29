@@ -1,1 +1,133 @@
-<p>notas-page.component works!</p>
+<div class="page-header">
+
+  <div>
+
+    <h2>
+      Notas Fiscais
+    </h2>
+
+    <p>
+      Crie e acompanhe o processamento das notas fiscais.
+    </p>
+
+  </div>
+
+
+  <button
+    nz-button
+    nzType="primary"
+    (click)="novaNota()">
+
+    Nova Nota
+
+  </button>
+
+</div>
+
+
+<nz-table
+  #notaTable
+  [nzData]="notas"
+  [nzLoading]="carregando"
+  [nzPageSize]="10">
+
+  <thead>
+
+    <tr>
+
+      <th>Número</th>
+
+      <th>Data</th>
+
+      <th>Status</th>
+
+      <th>Itens</th>
+
+      <th>Ações</th>
+
+    </tr>
+
+  </thead>
+
+
+  <tbody>
+
+    @for (nota of notaTable.data; track nota.id) {
+
+      <tr>
+
+        <td>
+          {{ nota.numero }}
+        </td>
+
+        <td>
+
+          {{ nota.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+
+        </td>
+
+        <td>
+
+          @if (nota.status === 2) {
+
+            <nz-tag nzColor="success">
+              Fechada
+            </nz-tag>
+
+          } @else {
+
+            <nz-tag nzColor="processing">
+              Aberta
+            </nz-tag>
+
+          }
+
+        </td>
+
+        <td>
+          {{ nota.itens.length }}
+        </td>
+
+        <td>
+
+          <button
+            nz-button
+            nzType="primary"
+            [disabled]="nota.status === 2"
+            [nzLoading]="processandoNotaId === nota.id"
+            (click)="imprimir(nota)">
+
+            @if (processandoNotaId === nota.id) {
+              Processando...
+            } @else {
+              Imprimir
+            }
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    }
+
+  </tbody>
+
+</nz-table>
+
+
+<nz-modal
+  [(nzVisible)]="modalAberto"
+  nzTitle="Nova Nota Fiscal"
+  [nzFooter]="null"
+  (nzOnCancel)="fecharModal()">
+
+  <ng-container *nzModalContent>
+
+    <app-nota-form
+      (salvo)="notaCriada()"
+      (cancelado)="fecharModal()" />
+
+  </ng-container>
+
+</nz-modal>

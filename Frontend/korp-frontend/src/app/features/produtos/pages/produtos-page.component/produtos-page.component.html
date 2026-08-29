@@ -1,1 +1,105 @@
-<p>produtos-page.component works!</p>
+<div class="page-header">
+
+  <div>
+    <h2>Produtos</h2>
+
+    <p>
+      Gerencie os produtos disponíveis no estoque.
+    </p>
+  </div>
+
+  <button
+    nz-button
+    nzType="primary"
+    (click)="novoProduto()">
+
+    Novo Produto
+
+  </button>
+
+</div>
+
+
+<nz-table
+  #produtoTable
+  [nzData]="produtos"
+  [nzLoading]="carregando"
+  [nzPageSize]="10">
+
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Descrição</th>
+      <th>Saldo</th>
+      <th nzWidth="180px">Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    @for (produto of produtoTable.data; track produto.id) {
+
+      <tr>
+
+        <td>
+          {{ produto.codigo }}
+        </td>
+
+        <td>
+          {{ produto.descricao }}
+        </td>
+
+        <td>
+          {{ produto.saldo }}
+        </td>
+
+        <td>
+
+          <button
+            nz-button
+            nzType="link"
+            (click)="editarProduto(produto)">
+
+            Editar
+
+          </button>
+
+          <button
+            nz-button
+            nzType="link"
+            nzDanger
+            nz-popconfirm
+            nzPopconfirmTitle="Deseja realmente excluir este produto?"
+            (nzOnConfirm)="excluirProduto(produto)">
+
+            Excluir
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    }
+
+  </tbody>
+
+</nz-table>
+
+
+<nz-modal
+  [(nzVisible)]="modalAberto"
+  [nzTitle]="produtoSelecionado ? 'Editar Produto' : 'Novo Produto'"
+  [nzFooter]="null"
+  (nzOnCancel)="fecharModal()">
+
+  <ng-container *nzModalContent>
+
+    <app-produto-form
+      [produto]="produtoSelecionado"
+      (salvo)="produtoSalvo()"
+      (cancelado)="fecharModal()" />
+
+  </ng-container>
+
+</nz-modal>
