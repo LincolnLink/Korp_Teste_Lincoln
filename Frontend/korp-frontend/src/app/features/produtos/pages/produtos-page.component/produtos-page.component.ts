@@ -17,6 +17,8 @@ import { ProdutoService } from '../../../../core/services/produto.service';
 import { Produto } from '../../../../core/models/produto.model';
 
 import { ProdutoFormComponents } from '../../components/produto-form.components/produto-form.components';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorService } from '../../../../core/services/http-error.service';
 
 @Component({
   selector: 'app-produtos-page',
@@ -37,6 +39,7 @@ export class ProdutosPageComponent implements OnInit {
   private readonly produtoService = inject(ProdutoService);
   private readonly message = inject(NzMessageService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly httpErrorService = inject(HttpErrorService);
 
   produtos: Produto[] = [];
 
@@ -68,11 +71,13 @@ export class ProdutosPageComponent implements OnInit {
         next: (produtos) => {
           this.produtos = produtos;
         },
-        error: () => {
+        error: (erro: HttpErrorResponse) => {
           this.message.error(
-            'Não foi possível carregar os produtos.'
+            this.httpErrorService.obterMensagem(
+              erro,
+              'Não foi possível carregar os produtos.'
+            )
           );
-          this.cdr.markForCheck();
         }
       });
   }
@@ -123,11 +128,14 @@ export class ProdutosPageComponent implements OnInit {
         this.carregarProdutos();
       },
 
-      error: () => {
-
+      error: (erro: HttpErrorResponse) => {
         this.message.error(
-          'Não foi possível excluir o produto.'
+          this.httpErrorService.obterMensagem(
+            erro,
+            'Não foi possível excluir o produto.'
+          )
         );
+
         this.cdr.markForCheck();
       }
 

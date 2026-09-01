@@ -35,6 +35,10 @@ import {
   CriarNotaFiscal
 } from '../../../../core/models/nota-fiscal.model';
 
+import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
+import { HttpErrorService } from '../../../../core/services/http-error.service';
+
 @Component({
   selector: 'app-nota-form',
   standalone: true,
@@ -62,6 +66,9 @@ export class NotaFormComponents implements OnInit {
 
   private readonly message =
     inject(NzMessageService);
+
+  private readonly httpErrorService =
+    inject(HttpErrorService);
 
 
   @Output()
@@ -103,21 +110,18 @@ export class NotaFormComponents implements OnInit {
   carregarProdutos(): void {
 
     this.produtoService.listar().subscribe({
-
       next: (produtos) => {
-
         this.produtos = produtos;
-
       },
-
-      error: () => {
+      error: (erro: HttpErrorResponse) => {
 
         this.message.error(
-          'Não foi possível carregar os produtos.'
+          this.httpErrorService.obterMensagem(
+            erro,
+            'Não foi possível carregar os produtos.'
+          )
         );
-
       }
-
     });
 
   }
@@ -160,52 +164,38 @@ export class NotaFormComponents implements OnInit {
 
 
   salvar(): void {
-
     if (this.form.invalid) {
-
       this.form.markAllAsTouched();
-
       return;
-
     }
 
-
     const dto: CriarNotaFiscal = {
-
       itens: this.itens.getRawValue()
-
     };
-
 
     this.salvando = true;
 
-
-    this.notaFiscalService.criar(dto).subscribe({
-
-      next: () => {
-
+    this.notaFiscalService
+    .criar(dto)
+    .pipe(
+      finalize(() => {
         this.salvando = false;
-
+      })
+    ).subscribe({
+      next: () => {
         this.message.success(
           'Nota fiscal criada com sucesso.'
         );
-
         this.salvo.emit();
-
       },
-
-      error: () => {
-
-        this.salvando = false;
-
+      error: (erro: HttpErrorResponse) => {
         this.message.error(
-          'Não foi possível criar a nota fiscal.'
+          this.httpErrorService.obterMensagem(
+            erro,
+            'Não foi possível criar a nota fiscal.'
+          )
         );
-
       }
-
     });
-
   }
-
 }

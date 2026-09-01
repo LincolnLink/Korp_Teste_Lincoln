@@ -28,6 +28,10 @@ import {
 
 import { ProdutoService } from '../../../../core/services/produto.service';
 
+import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
+import { HttpErrorService } from '../../../../core/services/http-error.service';
+
 @Component({
   selector: 'app-produto-form',
   standalone: true,
@@ -49,6 +53,8 @@ export class ProdutoFormComponents implements OnChanges {
   private readonly produtoService = inject(ProdutoService);
 
   private readonly message = inject(NzMessageService);
+
+  private readonly httpErrorService = inject(HttpErrorService);
 
 
   @Input()
@@ -103,27 +109,18 @@ export class ProdutoFormComponents implements OnChanges {
 
 
     if (this.produto) {
-
       this.form.patchValue({
-
         codigo: this.produto.codigo,
-
         descricao: this.produto.descricao,
-
         saldo: this.produto.saldo
-
       });
 
     } else {
 
       this.form.reset({
-
         codigo: '',
-
         descricao: '',
-
         saldo: 0
-
       });
 
     }
@@ -132,85 +129,71 @@ export class ProdutoFormComponents implements OnChanges {
 
 
   salvar(): void {
-
     if (this.form.invalid) {
-
       this.form.markAllAsTouched();
-
       return;
     }
 
-
     this.salvando = true;
 
-
     if (this.produto) {
-
       const dto: AtualizarProduto = this.form.getRawValue();
 
       this.produtoService
         .atualizar(this.produto.id, dto)
-        .subscribe({
-
-          next: () => {
-
+        .pipe(
+          finalize(() => {
             this.salvando = false;
-
+          })
+        )
+        .subscribe({
+          next: () => {
             this.message.success(
               'Produto atualizado com sucesso.'
             );
 
             this.salvo.emit();
-
           },
-
-          error: () => {
-
-            this.salvando = false;
-
+          error: (erro: HttpErrorResponse) => {
             this.message.error(
-              'Não foi possível atualizar o produto.'
+              this.httpErrorService.obterMensagem(
+                erro,
+                'Não foi possível atualizar o produto.'
+              )
             );
-
           }
-
         });
-
 
       return;
     }
 
-
     const dto: CriarProduto =
       this.form.getRawValue();
 
+    this.produtoService
+      .criar(dto)
+      .pipe(
+        finalize(() => {
+          this.salvando = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.message.success(
+            'Produto cadastrado com sucesso.'
+          );
 
-    this.produtoService.criar(dto).subscribe({
-
-      next: () => {
-
-        this.salvando = false;
-
-        this.message.success(
-          'Produto cadastrado com sucesso.'
-        );
-
-        this.salvo.emit();
-
-      },
-
-      error: () => {
-
-        this.salvando = false;
-
-        this.message.error(
-          'Não foi possível cadastrar o produto.'
-        );
-
-      }
-
-    });
-
+          this.salvo.emit();
+        },
+        error: (erro: HttpErrorResponse) => {
+          this.message.error(
+            this.httpErrorService.obterMensagem(
+              erro,
+              'Não foi possível cadastrar o produto.'
+            )
+          );
+        }
+      });
   }
 
 }

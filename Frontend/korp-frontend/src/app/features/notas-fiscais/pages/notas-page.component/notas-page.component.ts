@@ -15,17 +15,14 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import {
-  NotaFiscal
-} from '../../../../core/models/nota-fiscal.model';
+import { NotaFiscal } from '../../../../core/models/nota-fiscal.model';
 
-import {
-  NotaFiscalService
-} from '../../../../core/services/nota-fiscal.service';
+import { NotaFiscalService } from '../../../../core/services/nota-fiscal.service';
 
-import {
-  NotaFormComponents
-} from '../../components/nota-form.components/nota-form.components';
+import { NotaFormComponents } from '../../components/nota-form.components/nota-form.components';
+
+import { HttpErrorService } from '../../../../core/services/http-error.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-notas-page',
@@ -51,6 +48,7 @@ export class NotasPageComponent implements OnInit {
 
   private readonly cdr = inject(ChangeDetectorRef);
 
+  private readonly httpErrorService = inject(HttpErrorService);
 
   notas: NotaFiscal[] = [];
 
@@ -61,12 +59,7 @@ export class NotasPageComponent implements OnInit {
   processandoNotaId?: string;
 
 
-  ngOnInit(): void {
-
-    this.carregarNotas();
-
-  }
-
+  ngOnInit(): void { this.carregarNotas(); }
 
   carregarNotas(): void {
     this.carregando = true;
@@ -83,9 +76,9 @@ export class NotasPageComponent implements OnInit {
         next: (notas) => {
           this.notas = notas;
         },
-        error: () => {
+        error: (erro: HttpErrorResponse) => {
           this.message.error(
-            'Não foi possível carregar as notas fiscais.'
+            this.httpErrorService.obterMensagem(erro, 'Não foi possível carregar as notas fiscais.')
           );
         }
       });
@@ -128,11 +121,16 @@ export class NotasPageComponent implements OnInit {
 
           this.verificarStatusNota(nota);
         },
-        error: () => {
+        error: (erro: HttpErrorResponse) => {
           this.processandoNotaId = undefined;
+
           this.message.error(
-            'Não foi possível processar a nota fiscal.'
+            this.httpErrorService.obterMensagem(
+              erro,
+              'Não foi possível processar a nota fiscal.'
+            )
           );
+
           this.cdr.markForCheck();
         }
       });
@@ -159,14 +157,17 @@ export class NotasPageComponent implements OnInit {
             }
 
           },
-          error: () => {
+          error: (erro: HttpErrorResponse) => {
             clearInterval(intervalo);
-
             this.processandoNotaId = undefined;
 
             this.message.error(
-              'Erro ao consultar o processamento da nota.'
+              this.httpErrorService.obterMensagem(
+                erro,
+                'Erro ao consultar o processamento da nota.'
+              )
             );
+
             this.cdr.markForCheck();
           }
         });
