@@ -1,19 +1,27 @@
 .page-header {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
+  gap: 16px;
   margin-bottom: 24px;
+
+  h2 {
+    margin: 0 0 4px;
+  }
+
+  p {
+    margin: 0;
+    color: #777777;
+  }
 }
 
-.page-header h2 {
-  margin-bottom: 4px;
-}
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.page-header p {
-  margin: 0;
-
-  color: #777777;
+  .page-header button {
+    width: 100%;
+  }
 }
