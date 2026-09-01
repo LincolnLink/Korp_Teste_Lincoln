@@ -9,6 +9,8 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+
 @Component({
   selector: 'app-main-layout',
   standalone: true,
@@ -19,7 +21,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
     NzLayoutModule,
     NzMenuModule,
-    NzIconModule
+    NzIconModule,
+    NzDrawerModule
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss'
@@ -27,5 +30,5 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class MainLayoutComponent {
 
   isCollapsed = false;
-
+  menuMobileAberto = false;
 }

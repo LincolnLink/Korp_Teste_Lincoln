@@ -8,55 +8,81 @@
 
 .logo {
   height: 64px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #ffffff;
-
   font-size: 22px;
   font-weight: 600;
-
   letter-spacing: 2px;
 }
 
 .header {
   height: 64px;
-
   padding: 0 24px;
-
   background: #ffffff;
-
   display: flex;
   align-items: center;
-
   gap: 20px;
-
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .collapse-button {
   border: none;
   background: transparent;
-
   font-size: 20px;
-
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .header-title {
   font-size: 18px;
   font-weight: 500;
+  min-width: 0;
+}
+
+.mobile-menu-button {
+  display: none;
 }
 
 .content {
   margin: 24px;
   padding: 24px;
-
   background: #ffffff;
-
   min-height: calc(100vh - 112px);
-
   border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .desktop-sidebar {
+    display: none;
+  }
+
+  .desktop-menu-button {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header {
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .header-title {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .content {
+    margin: 12px;
+    padding: 16px;
+    min-height: calc(100vh - 88px);
+  }
 }

@@ -1,7 +1,8 @@
 <nz-layout class="app-layout">
 
+  <!-- MENU DESKTOP -->
   <nz-sider
-    class="menu-sidebar"
+    class="menu-sidebar desktop-sidebar"
     nzCollapsible
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null"
@@ -26,46 +27,53 @@
         nz-menu-item
         routerLink="/produtos"
         routerLinkActive="ant-menu-item-selected">
-
         <nz-icon nzType="appstore" />
 
         @if (!isCollapsed) {
           <span>Produtos</span>
         }
-
       </li>
 
       <li
         nz-menu-item
         routerLink="/notas"
         routerLinkActive="ant-menu-item-selected">
-
         <nz-icon nzType="file-text" />
 
         @if (!isCollapsed) {
           <span>Notas Fiscais</span>
         }
-
       </li>
 
     </ul>
-
   </nz-sider>
 
 
+  <!-- CONTEÚDO -->
   <nz-layout>
 
     <nz-header class="header">
 
+      <!-- BOTÃO DESKTOP -->
       <button
-        class="collapse-button"
+        class="collapse-button desktop-menu-button"
         type="button"
         (click)="isCollapsed = !isCollapsed">
 
         <nz-icon
           [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
-
       </button>
+
+
+      <!-- BOTÃO MOBILE -->
+      <button
+        class="collapse-button mobile-menu-button"
+        type="button"
+        (click)="menuMobileAberto = true">
+
+        <nz-icon nzType="menu" />
+      </button>
+
 
       <div class="header-title">
         Sistema de Faturamento
@@ -75,11 +83,52 @@
 
 
     <nz-content class="content">
-
       <router-outlet />
-
     </nz-content>
 
   </nz-layout>
 
 </nz-layout>
+
+
+<!-- MENU MOBILE -->
+<nz-drawer
+  [nzVisible]="menuMobileAberto"
+  nzPlacement="left"
+  nzTitle="KORP"
+  [nzWidth]="250"
+  (nzOnClose)="menuMobileAberto = false">
+
+  <ng-container *nzDrawerContent>
+
+    <ul
+      nz-menu
+      nzMode="inline">
+
+      <li
+        nz-menu-item
+        routerLink="/produtos"
+        routerLinkActive="ant-menu-item-selected"
+        (click)="menuMobileAberto = false">
+
+        <nz-icon nzType="appstore" />
+        <span>Produtos</span>
+
+      </li>
+
+      <li
+        nz-menu-item
+        routerLink="/notas"
+        routerLinkActive="ant-menu-item-selected"
+        (click)="menuMobileAberto = false">
+
+        <nz-icon nzType="file-text" />
+        <span>Notas Fiscais</span>
+
+      </li>
+
+    </ul>
+
+  </ng-container>
+
+</nz-drawer>
