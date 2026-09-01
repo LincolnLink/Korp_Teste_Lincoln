@@ -153,19 +153,23 @@ export class NotaFormComponents implements OnInit {
 
 
   removerItem(index: number): void {
-
     if (this.itens.length === 1) {
       return;
     }
-
     this.itens.removeAt(index);
-
   }
 
 
   salvar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
+
+    if (this.possuiProdutosDuplicados()) {
+      this.message.warning(
+        'Não é permitido adicionar o mesmo produto mais de uma vez na nota.'
+      );
       return;
     }
 
@@ -176,26 +180,35 @@ export class NotaFormComponents implements OnInit {
     this.salvando = true;
 
     this.notaFiscalService
-    .criar(dto)
-    .pipe(
-      finalize(() => {
-        this.salvando = false;
-      })
-    ).subscribe({
-      next: () => {
-        this.message.success(
-          'Nota fiscal criada com sucesso.'
-        );
-        this.salvo.emit();
-      },
-      error: (erro: HttpErrorResponse) => {
-        this.message.error(
-          this.httpErrorService.obterMensagem(
-            erro,
-            'Não foi possível criar a nota fiscal.'
-          )
-        );
-      }
-    });
+      .criar(dto)
+      .pipe(
+        finalize(() => {
+          this.salvando = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.message.success(
+            'Nota fiscal criada com sucesso.'
+          );
+          this.salvo.emit();
+        },
+        error: (erro: HttpErrorResponse) => {
+          this.message.error(
+            this.httpErrorService.obterMensagem(
+              erro,
+              'Não foi possível criar a nota fiscal.'
+            )
+          );
+        }
+      });
+  }
+
+  private possuiProdutosDuplicados(): boolean {
+    const produtoIds = this.itens
+      .getRawValue()
+      .map(item => item.produtoId);
+
+    return new Set(produtoIds).size !== produtoIds.length;
   }
 }

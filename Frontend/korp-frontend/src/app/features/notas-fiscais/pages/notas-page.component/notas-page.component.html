@@ -29,7 +29,8 @@
   #notaTable
   [nzData]="notas"
   [nzLoading]="carregando"
-  [nzPageSize]="10">
+  [nzPageSize]="10"
+  nzNoResult="Nenhuma nota fiscal cadastrada.">
 
   <thead>
 
@@ -41,7 +42,7 @@
 
       <th>Status</th>
 
-      <th>Itens</th>
+      <th>Qtd. Produtos</th>
 
       <th>Ações</th>
 
@@ -85,7 +86,7 @@
         </td>
 
         <td>
-          {{ nota.itens.length }}
+          {{ quantidadeTotalItens(nota) }}
         </td>
 
         <td>

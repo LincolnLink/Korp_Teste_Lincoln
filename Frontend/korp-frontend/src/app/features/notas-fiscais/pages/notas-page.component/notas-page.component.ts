@@ -183,4 +183,11 @@ export class NotasPageComponent implements OnInit {
 
   }
 
+  quantidadeTotalItens(nota: NotaFiscal): number {
+    return nota.itens.reduce(
+      (total, item) => total + item.quantidade,
+      0
+    );
+  }
+
 }
