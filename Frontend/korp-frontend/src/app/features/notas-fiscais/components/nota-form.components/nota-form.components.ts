@@ -173,6 +173,14 @@ export class NotaFormComponents implements OnInit {
       return;
     }
 
+    if (this.possuiQuantidadeMaiorQueEstoque()) {
+      this.message.warning(
+        'A quantidade informada é maior que o saldo disponível em estoque.'
+      );
+
+      return;
+    }
+
     const dto: CriarNotaFiscal = {
       itens: this.itens.getRawValue()
     };
@@ -210,5 +218,21 @@ export class NotaFormComponents implements OnInit {
       .map(item => item.produtoId);
 
     return new Set(produtoIds).size !== produtoIds.length;
+  }
+
+  private possuiQuantidadeMaiorQueEstoque(): boolean {
+    const itens = this.itens.getRawValue();
+
+    return itens.some(item => {
+      const produto = this.produtos.find(
+        produto => produto.id === item.produtoId
+      );
+
+      if (!produto) {
+        return false;
+      }
+
+      return item.quantidade > produto.saldo;
+    });
   }
 }
