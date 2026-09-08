@@ -15,8 +15,11 @@
   }
 }
 
-td button+button {
-  margin-left: 8px;
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
 @media (max-width: 768px) {

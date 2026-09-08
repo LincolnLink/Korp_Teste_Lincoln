@@ -37,7 +37,7 @@
 
       <th>Qtd. Produtos</th>
 
-      <th>Ações</th>
+      <th nzWidth="220px">Ações</th>
 
     </tr>
 
@@ -81,22 +81,23 @@
       </td>
 
       <td>
+        <div class="acoes">
+          <button nz-button nzType="default" (click)="visualizar(nota)">
+            Visualizar
+          </button>
 
-        <button nz-button nzType="default" (click)="visualizar(nota)">
-          Visualizar
-        </button>
+          <button nz-button nzType="primary" [disabled]="nota.status !== 1" [nzLoading]="processandoNotaId === nota.id"
+            (click)="imprimir(nota)">
 
-        <button nz-button nzType="primary" [disabled]="nota.status !== 1" [nzLoading]="processandoNotaId === nota.id"
-          (click)="imprimir(nota)">
+            @if (processandoNotaId === nota.id) {
+            Processando...
+            } @else {
+            Imprimir
+            }
 
-          @if (processandoNotaId === nota.id) {
-          Processando...
-          } @else {
-          Imprimir
-          }
+          </button>
 
-        </button>
-
+        </div>
       </td>
 
     </tr>
