@@ -8,7 +8,7 @@ O projeto foi desenvolvido utilizando uma arquitetura de microsserviços, separa
 
 ### Backend
 - C#
-- ASP.NET Core
+- ASP.NET Core 10
 - Entity Framework Core
 - SQL Server
 - FluentValidation
