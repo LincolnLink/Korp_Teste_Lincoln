@@ -15,6 +15,10 @@
   }
 }
 
+td button+button {
+  margin-left: 8px;
+}
+
 @media (max-width: 768px) {
   .page-header {
     flex-direction: column;

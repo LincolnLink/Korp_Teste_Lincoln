@@ -82,6 +82,10 @@
 
       <td>
 
+        <button nz-button nzType="default" (click)="visualizar(nota)">
+          Visualizar
+        </button>
+
         <button nz-button nzType="primary" [disabled]="nota.status !== 1" [nzLoading]="processandoNotaId === nota.id"
           (click)="imprimir(nota)">
 
@@ -112,4 +116,52 @@
 
   </ng-container>
 
+</nz-modal>
+
+<nz-modal [(nzVisible)]="modalVisualizacaoAberto" [nzTitle]="'Nota Fiscal Nº ' + notaSelecionada?.numero"
+  [nzFooter]="null" (nzOnCancel)="fecharVisualizacao()">
+
+  <ng-container *nzModalContent>
+
+    @if (notaSelecionada) {
+
+    <p>
+      <strong>Status:</strong>
+      {{ statusDescricao(notaSelecionada.status) }}
+    </p>
+
+    <p>
+      <strong>Data:</strong>
+      {{ notaSelecionada.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+    </p>
+
+    <nz-table #itensTable [nzData]="notaSelecionada.itens" [nzShowPagination]="false"
+      nzNoResult="Nenhum item encontrado.">
+
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of itensTable.data; track item.produtoId) {
+        <tr>
+          <td>
+            {{ obterProdutoDescricao(item.produtoId) }}
+          </td>
+
+          <td>
+            {{ item.quantidade }}
+          </td>
+        </tr>
+        }
+      </tbody>
+
+    </nz-table>
+
+    }
+
+  </ng-container>
 </nz-modal>

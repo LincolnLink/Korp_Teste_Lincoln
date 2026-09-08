@@ -24,6 +24,9 @@ import { NotaFormComponents } from '../../components/nota-form.components/nota-f
 import { HttpErrorService } from '../../../../core/services/http-error.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { Produto } from '../../../../core/models/produto.model';
+import { ProdutoService } from '../../../../core/services/produto.service';
+
 @Component({
   selector: 'app-notas-page',
   standalone: true,
@@ -50,6 +53,10 @@ export class NotasPageComponent implements OnInit {
 
   private readonly httpErrorService = inject(HttpErrorService);
 
+  private readonly produtoService = inject(ProdutoService);
+
+  produtos: Produto[] = [];
+
   notas: NotaFiscal[] = [];
 
   carregando = false;
@@ -58,8 +65,14 @@ export class NotasPageComponent implements OnInit {
 
   processandoNotaId?: string;
 
+  modalVisualizacaoAberto = false;
+  notaSelecionada?: NotaFiscal;
 
-  ngOnInit(): void { this.carregarNotas(); }
+
+  ngOnInit(): void {
+    this.carregarNotas();
+    this.carregarProdutos();
+  }
 
   carregarNotas(): void {
     this.carregando = true;
@@ -84,6 +97,24 @@ export class NotasPageComponent implements OnInit {
       });
   }
 
+  carregarProdutos(): void {
+    this.produtoService
+      .listar()
+      .subscribe({
+        next: (produtos) => {
+          this.produtos = produtos;
+          this.cdr.markForCheck();
+        },
+        error: (erro: HttpErrorResponse) => {
+          this.message.error(
+            this.httpErrorService.obterMensagem(
+              erro,
+              'Não foi possível carregar os produtos.'
+            )
+          );
+        }
+      });
+  }
 
   novaNota(): void {
 
@@ -205,6 +236,28 @@ export class NotasPageComponent implements OnInit {
       (total, item) => total + item.quantidade,
       0
     );
+  }
+
+  obterProdutoDescricao(produtoId: string): string {
+    const produto = this.produtos.find(
+      produto => produto.id === produtoId
+    );
+
+    if (!produto) {
+      return 'Produto não encontrado';
+    }
+
+    return `${produto.codigo} - ${produto.descricao}`;
+  }
+
+  visualizar(nota: NotaFiscal): void {
+    this.notaSelecionada = nota;
+    this.modalVisualizacaoAberto = true;
+  }
+
+  fecharVisualizacao(): void {
+    this.modalVisualizacaoAberto = false;
+    this.notaSelecionada = undefined;
   }
 
 }

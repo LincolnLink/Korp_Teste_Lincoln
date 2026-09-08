@@ -13,7 +13,7 @@ O projeto foi desenvolvido utilizando uma arquitetura de microsserviços, separa
 - SQL Server
 - FluentValidation
 - RabbitMQ
-- Swagger / OpenAPI
+- Swagger
 
 ### Frontend
 - Angular 22
