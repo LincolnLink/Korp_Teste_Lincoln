@@ -4,7 +4,6 @@ namespace Korp.Faturamento.Domain.Interfaces
 {
     public interface IResultadoNotaService
     {
-        Task ProcessarResultadoAsync(
-            ResultadoProcessamentoNotaMessage message);
+        Task ProcessarResultadoAsync(ResultadoProcessamentoNotaMessage message);
     }
 }

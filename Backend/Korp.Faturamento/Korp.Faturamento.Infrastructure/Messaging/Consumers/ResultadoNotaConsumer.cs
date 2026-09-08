@@ -32,8 +32,7 @@ namespace Korp.Faturamento.Infrastructure.Messaging.Consumers
             _logger = logger;
         }
 
-        protected override async Task ExecuteAsync(
-            CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _channel = await _connection.CreateChannelAsync();
 
