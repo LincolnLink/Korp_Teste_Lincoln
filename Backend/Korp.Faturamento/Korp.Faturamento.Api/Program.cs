@@ -1,5 +1,7 @@
 using Korp.Faturamento.Api.Configuration;
 using Korp.Faturamento.Infrastructure.Messaging;
+using Korp.Faturamento.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext =
+        scope.ServiceProvider.GetRequiredService<FaturamentoDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+}
 
 app.UseCors("Frontend");
 

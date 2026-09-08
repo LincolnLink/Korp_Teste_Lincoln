@@ -138,24 +138,34 @@ export class NotasPageComponent implements OnInit {
 
   private verificarStatusNota(nota: NotaFiscal): void {
     const intervalo = setInterval(() => {
-
       this.notaFiscalService
         .buscarPorId(nota.id)
         .subscribe({
           next: (notaAtualizada) => {
-
             if (notaAtualizada.status === 2) {
               clearInterval(intervalo);
-
               this.processandoNotaId = undefined;
 
               this.message.success(
                 `Nota ${nota.numero} processada com sucesso.`
               );
+
+              this.cdr.markForCheck();
+              this.carregarNotas();
+              return;
+            }
+
+            if (notaAtualizada.status === 3) {
+              clearInterval(intervalo);
+              this.processandoNotaId = undefined;
+
+              this.message.error(
+                `Não foi possível processar a nota ${nota.numero}. Verifique o estoque disponível.`
+              );
+
               this.cdr.markForCheck();
               this.carregarNotas();
             }
-
           },
           error: (erro: HttpErrorResponse) => {
             clearInterval(intervalo);
@@ -171,16 +181,23 @@ export class NotasPageComponent implements OnInit {
             this.cdr.markForCheck();
           }
         });
-
     }, 1000);
   }
 
   statusDescricao(status: number): string {
+    switch (status) {
+      case 1:
+        return 'Aberta';
 
-    return status === 2
-      ? 'Fechada'
-      : 'Aberta';
+      case 2:
+        return 'Fechada';
 
+      case 3:
+        return 'Falha';
+
+      default:
+        return 'Desconhecido';
+    }
   }
 
   quantidadeTotalItens(nota: NotaFiscal): number {

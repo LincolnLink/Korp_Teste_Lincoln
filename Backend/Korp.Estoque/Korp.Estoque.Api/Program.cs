@@ -1,5 +1,7 @@
 using Korp.Estoque.Api.Configuration;
+using Korp.Estoque.Infrastructure.Context;
 using Korp.Estoque.Infrastructure.Messaging;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext =
+        scope.ServiceProvider.GetRequiredService<EstoqueDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+}
 
 app.UseCors("Frontend");
 

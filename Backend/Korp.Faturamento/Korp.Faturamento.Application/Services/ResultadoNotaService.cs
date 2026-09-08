@@ -20,12 +20,17 @@ namespace Korp.Faturamento.Application.Services
             var nota = await _repository.ObterPorIdAsync(message.NotaFiscalId);
 
             if (nota is null)
+            {
                 throw new NotFoundException(
                     $"Nota fiscal {message.NotaFiscalId} não encontrada.");
+            }
 
             if (!message.Sucesso)
             {
-                // permanece Aberta
+                nota.Status = StatusNotaFiscal.Falha;
+
+                await _repository.AtualizarAsync(nota);
+
                 return;
             }
 

@@ -3,6 +3,7 @@
     public enum StatusNotaFiscal
     {        
         Aberta = 1,
-        Fechada = 2
+        Fechada = 2,
+        Falha = 3
     }
 }

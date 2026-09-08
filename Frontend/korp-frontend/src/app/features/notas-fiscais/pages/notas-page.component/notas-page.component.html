@@ -13,10 +13,7 @@
   </div>
 
 
-  <button
-    nz-button
-    nzType="primary"
-    (click)="novaNota()">
+  <button nz-button nzType="primary" (click)="novaNota()">
 
     Nova Nota
 
@@ -25,12 +22,7 @@
 </div>
 
 
-<nz-table
-  #notaTable
-  [nzData]="notas"
-  [nzLoading]="carregando"
-  [nzPageSize]="10"
-  [nzScroll]="{ x: '700px' }"
+<nz-table #notaTable [nzData]="notas" [nzLoading]="carregando" [nzPageSize]="10" [nzScroll]="{ x: '700px' }"
   nzNoResult="Nenhuma nota fiscal cadastrada.">
 
   <thead>
@@ -56,60 +48,54 @@
 
     @for (nota of notaTable.data; track nota.id) {
 
-      <tr>
+    <tr>
 
-        <td>
-          {{ nota.numero }}
-        </td>
+      <td>
+        {{ nota.numero }}
+      </td>
 
-        <td>
+      <td>
 
-          {{ nota.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+        {{ nota.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
 
-        </td>
+      </td>
 
-        <td>
+      <td>
+        @if (nota.status === 1) {
+        <nz-tag nzColor="processing">
+          Aberta
+        </nz-tag>
+        } @else if (nota.status === 2) {
+        <nz-tag nzColor="success">
+          Fechada
+        </nz-tag>
+        } @else if (nota.status === 3) {
+        <nz-tag nzColor="error">
+          Falha
+        </nz-tag>
+        }
+      </td>
 
-          @if (nota.status === 2) {
+      <td>
+        {{ quantidadeTotalItens(nota) }}
+      </td>
 
-            <nz-tag nzColor="success">
-              Fechada
-            </nz-tag>
+      <td>
 
+        <button nz-button nzType="primary" [disabled]="nota.status !== 1" [nzLoading]="processandoNotaId === nota.id"
+          (click)="imprimir(nota)">
+
+          @if (processandoNotaId === nota.id) {
+          Processando...
           } @else {
-
-            <nz-tag nzColor="processing">
-              Aberta
-            </nz-tag>
-
+          Imprimir
           }
 
-        </td>
+        </button>
 
-        <td>
-          {{ quantidadeTotalItens(nota) }}
-        </td>
+      </td>
 
-        <td>
-
-          <button
-            nz-button
-            nzType="primary"
-            [disabled]="nota.status === 2"
-            [nzLoading]="processandoNotaId === nota.id"
-            (click)="imprimir(nota)">
-
-            @if (processandoNotaId === nota.id) {
-              Processando...
-            } @else {
-              Imprimir
-            }
-
-          </button>
-
-        </td>
-
-      </tr>
+    </tr>
 
     }
 
@@ -118,17 +104,11 @@
 </nz-table>
 
 
-<nz-modal
-  [(nzVisible)]="modalAberto"
-  nzTitle="Nova Nota Fiscal"
-  [nzFooter]="null"
-  (nzOnCancel)="fecharModal()">
+<nz-modal [(nzVisible)]="modalAberto" nzTitle="Nova Nota Fiscal" [nzFooter]="null" (nzOnCancel)="fecharModal()">
 
   <ng-container *nzModalContent>
 
-    <app-nota-form
-      (salvo)="notaCriada()"
-      (cancelado)="fecharModal()" />
+    <app-nota-form (salvo)="notaCriada()" (cancelado)="fecharModal()" />
 
   </ng-container>
 

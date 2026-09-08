@@ -223,14 +223,27 @@ export class NotaFormComponents implements OnInit {
   private possuiQuantidadeMaiorQueEstoque(): boolean {
     const itens = this.itens.getRawValue();
 
+    console.log('ITENS DA NOTA:', itens);
+    console.log('PRODUTOS:', this.produtos);
+
     return itens.some(item => {
       const produto = this.produtos.find(
         produto => produto.id === item.produtoId
       );
 
+      console.log('ITEM:', item);
+      console.log('PRODUTO ENCONTRADO:', produto);
+
       if (!produto) {
         return false;
       }
+
+      console.log(
+        'QUANTIDADE:',
+        item.quantidade,
+        'SALDO:',
+        produto.saldo
+      );
 
       return item.quantidade > produto.saldo;
     });
